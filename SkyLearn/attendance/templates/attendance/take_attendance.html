@@ -1,0 +1,109 @@
+{% extends 'base.html' %}
+{% load i18n %}
+
+{% block content %}
+<nav style="--bs-breadcrumb-divider: '>';" aria-label="breadcrumb">
+    <ol class="breadcrumb">
+        <li class="breadcrumb-item"><a href="/">{% trans 'Home' %}</a></li>
+        <li class="breadcrumb-item"><a href="{% url 'attendance_course_list' %}">{% trans 'Attendance' %}</a></li>
+        <li class="breadcrumb-item active" aria-current="page">{{ course.title }}</li>
+    </ol>
+</nav>
+
+<div class="title-1">{{ course.title }} - {% trans 'Attendance Record' %}</div>
+
+<div class="card p-4 mt-4">
+    <form method="GET" class="mb-4">
+        <div class="row align-items-end">
+            <div class="col-md-3">
+                <label class="form-label">{% trans 'Select Date' %}</label>
+                <input type="date" name="date" value="{{ date }}" class="form-control" onchange="this.form.submit()">
+            </div>
+        </div>
+    </form>
+
+    <form method="POST">
+        {% csrf_token %}
+        <input type="hidden" name="date" value="{{ date }}">
+
+        {% if is_locked %}
+        <div class="alert alert-warning mb-3">
+            <i class="fas fa-lock me-2"></i> {% trans 'Bu jurnal təsdiqlənib və kilidləndiyi üçün redaktə edilə bilməz.'
+            %}
+        </div>
+        {% endif %}
+
+        <table class="table table-bordered table-striped mt-3">
+            <thead class="bg-dark text-light">
+                <tr>
+                    <th>#</th>
+                    <th>{% trans 'Tələbə' %}</th>
+                    <th class="text-center">{% trans 'Davamiyyət' %}</th>
+                    <th class="text-center">{% trans 'Bal (0-10)' %}</th>
+                    <th class="text-center">{% trans 'Qeyd' %}</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for student in students %}
+                <tr>
+                    <td>{{ forloop.counter }}</td>
+                    <td>{{ student.student.get_full_name }}</td>
+                    <td class="text-center">
+                        <div class="btn-group" role="group">
+                            <input type="radio" class="btn-check" name="student_{{ student.id }}"
+                                id="present_{{ student.id }}" value="present" {% if
+                                attendance_dict|get_item:student.id==True or attendance_dict|get_item:student.id==None
+                                %}checked{% endif %} {% if is_locked and not request.user.is_superuser %}disabled{%
+                                endif %}>
+                            <label class="btn btn-outline-success btn-sm" for="present_{{ student.id }}">{% trans
+                                'İştirak edir' %}</label>
+
+                            <input type="radio" class="btn-check" name="student_{{ student.id }}"
+                                id="absent_{{ student.id }}" value="absent" {% if
+                                attendance_dict|get_item:student.id==False %}checked{% endif %} {% if is_locked and not
+                                request.user.is_superuser %}disabled{% endif %}>
+                            <label class="btn btn-outline-danger btn-sm" for="absent_{{ student.id }}">{% trans
+                                'Eşitmədi'
+                                %}</label>
+                        </div>
+                    </td>
+                    <td class="text-center">
+                        <input type="number" name="point_{{ student.id }}"
+                            value="{{ points_dict|get_item:student.id|default:0 }}"
+                            class="form-control form-control-sm mx-auto" style="width: 70px;" min="0" max="10" {% if
+                            is_locked and not request.user.is_superuser %}disabled{% endif %}>
+                    </td>
+                    <td class="text-center">
+                        <textarea name="note_{{ student.id }}" class="form-control form-control-sm" rows="1"
+                            placeholder="{% trans 'Qeyd edin...' %}" {% if is_locked and not request.user.is_superuser
+                            %}disabled{% endif %}>{{ notes_dict|get_item:student.id|default:'' }}</textarea>
+                    </td>
+                </tr>
+                {% empty %}
+                <tr>
+                    <td colspan="5" class="text-center text-muted">{% trans 'No students enrolled in this course.' %}
+                    </td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+
+        {% if students %}
+        <div class="mt-4 d-flex align-items-center">
+            {% if not is_locked or request.user.is_superuser %}
+            <div class="form-check me-4">
+                <input class="form-check-input" type="checkbox" name="lock_journal" id="lock_journal">
+                <label class="form-check-label text-danger fw-bold" for="lock_journal">
+                    {% trans 'Təsdiqlə və Kilidlə' %}
+                </label>
+            </div>
+            <button type="submit" class="btn btn-primary">
+                <i class="fas fa-save me-1"></i> {% trans 'Save Journal' %}
+            </button>
+            {% endif %}
+            <a href="{% url 'attendance_course_list' %}" class="btn btn-light ms-2">{% trans 'Cancel' %}</a>
+        </div>
+        {% endif %}
+    </form>
+</div>
+{% endblock content %}

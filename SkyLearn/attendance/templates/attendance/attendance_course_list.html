@@ -1,0 +1,45 @@
+{% extends 'base.html' %}
+{% load i18n %}
+
+{% block content %}
+<nav style="--bs-breadcrumb-divider: '>';" aria-label="breadcrumb">
+    <ol class="breadcrumb">
+        <li class="breadcrumb-item"><a href="/">{% trans 'Home' %}</a></li>
+        <li class="breadcrumb-item active" aria-current="page">{% trans 'Attendance' %}</li>
+    </ol>
+</nav>
+
+<div class="title-1">{% trans 'Manage Attendance' %}</div>
+
+<div class="card p-3 mt-4">
+    <h5>{% trans 'Your Courses' %}</h5>
+    <table class="table table-hover mt-3">
+        <thead>
+            <tr>
+                <th>#</th>
+                <th>{% trans 'Course Name' %}</th>
+                <th>{% trans 'Code' %}</th>
+                <th>{% trans 'Action' %}</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for course in courses %}
+            <tr>
+                <td>{{ forloop.counter }}</td>
+                <td>{{ course.title }}</td>
+                <td>{{ course.code }}</td>
+                <td>
+                    <a href="{% url 'take_attendance' course.id %}" class="btn btn-sm btn-primary">
+                        <i class="fas fa-edit me-1"></i> {% trans 'Take Attendance' %}
+                    </a>
+                </td>
+            </tr>
+            {% empty %}
+            <tr>
+                <td colspan="4" class="text-center text-muted">{% trans 'No courses allocated.' %}</td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</div>
+{% endblock content %}

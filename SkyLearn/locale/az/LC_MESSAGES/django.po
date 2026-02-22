@@ -1,0 +1,1223 @@
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: SkyLearn\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2026-01-25 22:45+0400\n"
+"PO-Revision-Date: 2026-01-25 22:45+0400\n"
+"Last-Translator: Antigravity\n"
+"Language-Team: Azerbaijani\n"
+"Language: az\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+
+msgid "Home"
+msgstr "Ana Səhifə"
+
+msgid "Dashboard"
+msgstr "İdarə Paneli"
+
+msgid "Profile"
+msgstr "Profil"
+
+msgid "My Courses"
+msgstr "Kurslarım"
+
+msgid "Admin Panel"
+msgstr "Admin Paneli"
+
+msgid "Lecturers"
+msgstr "Müəllimlər"
+
+msgid "Students"
+msgstr "Tələbələr"
+
+msgid "Programs & Courses"
+msgstr "Proqramlar və Kurslar"
+
+msgid "Complete Exams"
+msgstr "İmtahanlar"
+
+msgid "Quiz Progress Rec"
+msgstr "Sınaq Tərəqqi Rekordu"
+
+msgid "Course Allocation"
+msgstr "Kurs Ayırmaları"
+
+msgid "Manage Session"
+msgstr "Sessiya İdarəetməsi"
+
+msgid "Manage Semester"
+msgstr "Semestr İdarəetməsi"
+
+msgid "Manage Score"
+msgstr "Qiymət İdarəetməsi"
+
+msgid "Grade Results"
+msgstr "Qiymət Nəticələri"
+
+msgid "Assesment Results"
+msgstr "Qiymətləndirmə Nəticələri"
+
+msgid "Add"
+msgstr "Əlavə et"
+
+msgid "Drop Course"
+msgstr "Kursu sil"
+
+msgid "Account Setting"
+msgstr "Hesab Ayarları"
+
+msgid "Change Password"
+msgstr "Şifrəni Dəyiş"
+
+msgid "Signout"
+msgstr "Çıxış"
+
+msgid "Last login:"
+msgstr "Son giriş:"
+
+msgid "Search All... #course, #program, #Quiz, #News, #Events"
+msgstr "Hər şeyi axtar... #kurs, #proqram, #sınaq, #xəbərlər"
+
+msgid "Setting"
+msgstr "Ayarlar"
+
+msgid "Read our"
+msgstr "Bizim"
+
+msgid "Privacy"
+msgstr "Məxfilik"
+
+msgid "and"
+msgstr "və"
+
+msgid "Terms of use."
+msgstr "İstifadə Şərtlərini oxuyun."
+
+msgid "⭐️ Star This Project"
+msgstr "⭐️ Layihəyə Ulduz Ver"
+
+msgid "Attendance"
+msgstr "Davamiyyət"
+
+msgid "My Attendance"
+msgstr "Davamiyyətim"
+
+msgid "Manage Attendance"
+msgstr "Davamiyyəti İdarə Et"
+
+msgid "Your Courses"
+msgstr "Kurslarınız"
+
+msgid "Course Name"
+msgstr "Kursun Adı"
+
+msgid "Code"
+msgstr "Kod"
+
+msgid "Action"
+msgstr "Əməliyyat"
+
+msgid "Take Attendance"
+msgstr "Davamiyyət Götür"
+
+msgid "No courses allocated."
+msgstr "Heç bir kurs təyin edilməyib."
+
+msgid "Attendance Record"
+msgstr "Davamiyyət Qeydi"
+
+msgid "Select Date"
+msgstr "Tarix Seçin"
+
+msgid "Student ID"
+msgstr "Tələbə ID"
+
+msgid "Full Name"
+msgstr "Tam Adı"
+
+msgid "Status"
+msgstr "Status"
+
+msgid "Present"
+msgstr "İştirak edir"
+
+msgid "Absent"
+msgstr "İştirak etmir"
+
+msgid "No students enrolled in this course."
+msgstr "Bu kursda qeydiyyatdan keçmiş tələbə yoxdur."
+
+msgid "Save Attendance"
+msgstr "Davamiyyəti Yadda Saxla"
+
+msgid "Cancel"
+msgstr "Ləğv et"
+
+msgid "My Attendance Report"
+msgstr "Davamiyyət Hesabatım"
+
+msgid "Total Sessions"
+msgstr "Ümumi Dərslər"
+
+msgid "Attendance Rate"
+msgstr "Davamiyyət Faizi"
+
+msgid "You are not enrolled in any courses."
+msgstr "Heç bir kursda qeydiyyatınız yoxdur."
+
+msgid "% correct"
+msgstr ""
+
+msgid "Academic Year"
+msgstr "Akademik İl"
+
+msgid "Academic Year:"
+msgstr "Akademik İl:"
+
+msgid "Account Settings"
+msgstr "Hesab Ayarları"
+
+msgid "Account setting"
+msgstr "Hesab ayarı"
+
+msgid "Actions"
+msgstr "Əməliyyatlar"
+
+msgid "Add Course"
+msgstr ""
+
+msgid "Add Lecturer"
+msgstr ""
+
+msgid "Add Lecturer Now."
+msgstr ""
+
+msgid "Add New Post"
+msgstr ""
+
+msgid "Add New Semester"
+msgstr ""
+
+msgid "Add New Session"
+msgstr ""
+
+msgid "Add Program"
+msgstr ""
+
+msgid "Add Quiz"
+msgstr ""
+
+msgid "Add Selected"
+msgstr ""
+
+msgid "Add Semester Now."
+msgstr ""
+
+msgid "Add Session Now."
+msgstr ""
+
+msgid "Add Student"
+msgstr ""
+
+msgid "Add Student Now."
+msgstr ""
+
+msgid "Add one now."
+msgstr ""
+
+msgid "Add program now."
+msgstr ""
+
+msgid "Add questions"
+msgstr ""
+
+msgid "Address/City"
+msgstr ""
+
+msgid "Address/city"
+msgstr ""
+
+msgid "Address/city:"
+msgstr ""
+
+msgid "Administrators"
+msgstr ""
+
+msgid "All Courses:"
+msgstr ""
+
+msgid "All Quizzes"
+msgstr ""
+
+msgid "Allocate Now"
+msgstr ""
+
+msgid "Allocate now"
+msgstr ""
+
+msgid "Allocation Form"
+msgstr ""
+
+msgid "Allocation list"
+msgstr ""
+
+msgid "Already Registered ?"
+msgstr ""
+
+msgid ""
+"An Email has been sent with instructions\n"
+"      to reset your password, check your email."
+msgstr ""
+
+msgid "Applicant Info"
+msgstr ""
+
+msgid "Assignment"
+msgstr "Tapşırıq"
+
+msgid "Back To Login"
+msgstr ""
+
+msgid "Bad request"
+msgstr "Xoşagəlməz sorğu"
+
+msgid "Below are the results of exams that you have sat"
+msgstr "Aşağıda keçdiyiniz imtahanların nəticələri verilmişdir"
+
+msgid "Calculating your result..."
+msgstr "Sizin nəticəniz hesablanır..."
+
+msgid "Calender is off"
+msgstr ""
+
+msgid "Category"
+msgstr "Kateqoriya"
+
+msgid "Change Program"
+msgstr ""
+
+msgid "Change password"
+msgstr ""
+
+msgid "Check the university calender"
+msgstr ""
+
+msgid "Choices"
+msgstr ""
+
+msgid "Classification"
+msgstr ""
+
+msgid "Coinbase"
+msgstr ""
+
+msgid "Comment"
+msgstr ""
+
+msgid "Completed"
+msgstr "Tamamlanmışdır"
+
+msgid "Completed Exams"
+msgstr ""
+
+msgid "Confirm New Password"
+msgstr ""
+
+msgid "Contact Info"
+msgstr ""
+
+msgid "Continue"
+msgstr ""
+
+msgid "Core"
+msgstr ""
+
+msgid "Correct"
+msgstr ""
+
+msgid "Correct the error(s) below."
+msgstr ""
+
+msgid "Correctly answererd"
+msgstr "Düzgün cavab verildi"
+
+msgid "Course"
+msgstr "Kurs"
+
+msgid "Course Add"
+msgstr ""
+
+msgid "Course Allocation Form"
+msgstr ""
+
+msgid "Course Allocations"
+msgstr ""
+
+msgid "Course Code"
+msgstr ""
+
+msgid "Course Detail"
+msgstr ""
+
+msgid "Course Drop"
+msgstr ""
+
+msgid "Course Form"
+msgstr ""
+
+msgid "Course Registration"
+msgstr ""
+
+msgid "Course Title"
+msgstr ""
+
+msgid "Course:"
+msgstr ""
+
+msgid "Courses"
+msgstr "Kurslar"
+
+msgid "Cr.Hr"
+msgstr ""
+
+msgid "Cr.Hr(s)"
+msgstr ""
+
+msgid "Create Your Account"
+msgstr ""
+
+msgid "Current Semester"
+msgstr ""
+
+msgid "Dashboard settings"
+msgstr ""
+
+msgid "Date:"
+msgstr ""
+
+msgid "Deallocate"
+msgstr ""
+
+msgid "Delete"
+msgstr "Sil"
+
+msgid "Display grid"
+msgstr ""
+
+msgid "Display table"
+msgstr ""
+
+msgid "Dj Learning Management System - Login"
+msgstr ""
+
+msgid "Documentations"
+msgstr ""
+
+msgid "Download"
+msgstr "Endir"
+
+msgid "Download PDF"
+msgstr ""
+
+msgid "Download pdf"
+msgstr ""
+
+msgid "Downloads"
+msgstr ""
+
+msgid "Drop"
+msgstr ""
+
+msgid "Drop Selected"
+msgstr ""
+
+msgid "Edit"
+msgstr "Redaktə et"
+
+msgid "Edit Profile"
+msgstr ""
+
+msgid "Edit course"
+msgstr ""
+
+msgid "Edit or Update"
+msgstr ""
+
+msgid "Elective"
+msgstr ""
+
+msgid "Elective Group"
+msgstr ""
+
+msgid "Email"
+msgstr "E-poçt"
+
+msgid "Email Sent | Learning management system"
+msgstr ""
+
+msgid "Email sent"
+msgstr ""
+
+msgid "Email:"
+msgstr ""
+
+msgid "End"
+msgstr "Son"
+
+msgid "Events"
+msgstr "Tədbirlər"
+
+msgid "Explanation"
+msgstr ""
+
+msgid "FAIL"
+msgstr ""
+
+msgid "File Upload Form"
+msgstr "Fayl Yükləmə Forması"
+
+msgid "File name"
+msgstr ""
+
+msgid "File upload"
+msgstr "Fayl yükləmə"
+
+msgid "File upload for"
+msgstr ""
+
+msgid "Filter"
+msgstr "Filter"
+
+msgid "Final exam"
+msgstr ""
+
+msgid "First Name"
+msgstr "Ad"
+
+msgid "First Name:"
+msgstr ""
+
+msgid "First Semester GPA:"
+msgstr ""
+
+msgid "First Semester:"
+msgstr ""
+
+msgid "First semester Credit(s):"
+msgstr ""
+
+msgid "Forgot password ?"
+msgstr ""
+
+msgid "GRADE"
+msgstr ""
+
+msgid "Get Started"
+msgstr ""
+
+msgid "Grade"
+msgstr "Rətibl"
+
+msgid "Grade report"
+msgstr ""
+
+msgid "Hawas Preparatory School"
+msgstr ""
+
+msgid "Hold down"
+msgstr ""
+
+msgid "ID No."
+msgstr ""
+
+msgid "ID No.:"
+msgstr ""
+
+msgid "ID Number"
+msgstr ""
+
+msgid "Important Dates"
+msgstr ""
+
+msgid "Incorrect"
+msgstr "Yanlış"
+
+msgid "Invalid ID & Password."
+msgstr ""
+
+msgid "Invoices"
+msgstr "Faturalar"
+
+msgid "Is Current Session"
+msgstr ""
+
+msgid "Is Current semester"
+msgstr ""
+
+msgid "Lab Assistance"
+msgstr ""
+
+msgid "Last Name"
+msgstr "Soyadı"
+
+msgid "Last Name:"
+msgstr ""
+
+msgid "Last login"
+msgstr "Son giriş"
+
+msgid "Latest activities"
+msgstr ""
+
+msgid "Learning management system"
+msgstr "Təhsil İdarəetməsi Sistemi"
+
+msgid "Lecturer"
+msgstr "Müəllim"
+
+msgid "Lecturer Add Form"
+msgstr ""
+
+msgid "Lecturer Update Form"
+msgstr ""
+
+msgid "Lecturer(s)"
+msgstr ""
+
+msgid "Level"
+msgstr ""
+
+msgid "Level:"
+msgstr ""
+
+msgid "Librarians"
+msgstr ""
+
+msgid "List of complete exams"
+msgstr ""
+
+msgid "Login"
+msgstr "Giriş"
+
+msgid "Login Form"
+msgstr ""
+
+msgid "Looks like the page you are looking for does not exist."
+msgstr ""
+
+msgid "MC Question Form"
+msgstr ""
+
+msgid "Manage"
+msgstr ""
+
+msgid "Manage dashboard"
+msgstr ""
+
+msgid "Mark"
+msgstr ""
+
+msgid "Marking"
+msgstr ""
+
+msgid "Mid exam"
+msgstr ""
+
+msgid "Mob No."
+msgstr ""
+
+msgid ""
+"My\n"
+"\t\t\t\t\tAttendance"
+msgstr ""
+
+msgid "My courses"
+msgstr ""
+
+msgid "New Password | Learning management system"
+msgstr ""
+
+msgid "News"
+msgstr "Xəbərlər"
+
+msgid "News And Events"
+msgstr "Xəbərlər və Tədbir"
+
+msgid "Next Semester Begins"
+msgstr ""
+
+msgid "Next Session Begins"
+msgstr ""
+
+msgid "No Course Allocated."
+msgstr ""
+
+msgid "No Course."
+msgstr ""
+
+msgid "No File Uploaded."
+msgstr ""
+
+msgid "No Lecturer(s)."
+msgstr ""
+
+msgid "No Semester."
+msgstr ""
+
+msgid "No Session."
+msgstr ""
+
+msgid "No Student."
+msgstr ""
+
+msgid "No completed exams for you"
+msgstr ""
+
+msgid "No course for this progrm."
+msgstr ""
+
+msgid "No course."
+msgstr ""
+
+msgid "No courses assigned!"
+msgstr ""
+
+msgid "No explanation set for this question."
+msgstr ""
+
+msgid "No explanation set to this question."
+msgstr ""
+
+msgid "No lecturer assigned for this course"
+msgstr ""
+
+msgid "No program."
+msgstr ""
+
+msgid "No recent activity"
+msgstr ""
+
+msgid "No video Uploaded."
+msgstr ""
+
+msgid "No video description set."
+msgstr "Heç bir video təsviri təyin edilməyib."
+
+msgid "Office Assistance"
+msgstr ""
+
+msgid "Other Info"
+msgstr ""
+
+msgid "Others"
+msgstr ""
+
+msgid "Out of 100%"
+msgstr "100% -dən"
+
+msgid "PASS"
+msgstr ""
+
+msgid "Password"
+msgstr "Şifrə"
+
+msgid "Password Change"
+msgstr "Şifrə Dəyişikliyi"
+
+msgid "Password Reset"
+msgstr ""
+
+msgid "Password Reset Complete"
+msgstr ""
+
+msgid "Password Reset Complete | Learning management system"
+msgstr ""
+
+msgid "Password Reset | Learning management system"
+msgstr ""
+
+msgid "Pay now"
+msgstr "İndi ödə"
+
+msgid "Payment Succeed, You has been make payment successfuly."
+msgstr ""
+
+msgid "Personal Info"
+msgstr ""
+
+msgid "Play now"
+msgstr ""
+
+msgid "Please make sure the form is correctly filled."
+msgstr ""
+
+msgid "Please try again later."
+msgstr ""
+
+msgid "Point"
+msgstr ""
+
+msgid "Points"
+msgstr ""
+
+msgid "Possible Score"
+msgstr "Mümkün Qiymət"
+
+msgid "Post Form"
+msgstr "Yazı Forması"
+
+msgid "Post form"
+msgstr "Yazı forması"
+
+msgid "Previous"
+msgstr "Əvvəlki"
+
+msgid "Previous CGPA:"
+msgstr ""
+
+msgid "Previous exam papers"
+msgstr "Əvvəlki imtahan sənədləri"
+
+msgid "Print Registerd Courses"
+msgstr ""
+
+msgid "Print Registration Form"
+msgstr ""
+
+msgid "Program"
+msgstr "Proqram"
+
+msgid "Program Add Form"
+msgstr ""
+
+msgid "Program Form"
+msgstr ""
+
+msgid "Program List"
+msgstr ""
+
+msgid "Program Name"
+msgstr ""
+
+msgid "Program of"
+msgstr ""
+
+msgid "Programs"
+msgstr "Proqramlar"
+
+msgid "Progress Page"
+msgstr "Tərəqqi Səhifəsi"
+
+msgid "Progress records will appear here"
+msgstr "Tərəqqi qeydləri burada görünəcəkdir"
+
+msgid "Question"
+msgstr "Sual"
+
+msgid "Question Category Scores"
+msgstr "Sual Kateqoriyası Qiymətləri"
+
+msgid "Questions"
+msgstr "Sualllar"
+
+msgid "Quiz"
+msgstr "Sınaq"
+
+msgid "Quiz Form"
+msgstr ""
+
+msgid "Quiz Results for"
+msgstr ""
+
+msgid "Quiz Title"
+msgstr "Sınaq Başlığı"
+
+msgid "Quiz category"
+msgstr "Sınaq kateqoriyası"
+
+msgid "Quiz form for"
+msgstr ""
+
+msgid "Quiz instractions"
+msgstr "Sınaq təlimatları"
+
+msgid "Quiz result"
+msgstr ""
+
+msgid "Quiz title"
+msgstr ""
+
+msgid "Quizzes"
+msgstr "Sınaqllar"
+
+msgid "Redirect to your dashboard in"
+msgstr ""
+
+msgid "Register | Learning management system"
+msgstr ""
+
+msgid "Registerd course credit(s):"
+msgstr ""
+
+msgid "Registered Date"
+msgstr ""
+
+msgid "Registered Date:"
+msgstr ""
+
+msgid "Request Password Reset"
+msgstr ""
+
+msgid "Reset Password"
+msgstr ""
+
+msgid "Result"
+msgstr "Nəticə"
+
+msgid "Result of"
+msgstr ""
+
+msgid "Return to the app"
+msgstr "Tətbiqə qayıt"
+
+msgid "Review the questions below and try the quiz again in the future"
+msgstr ""
+
+msgid "Role"
+msgstr ""
+
+msgid "Role:"
+msgstr ""
+
+msgid "SIGN IN"
+msgstr ""
+
+msgid "SIGN UP"
+msgstr ""
+
+msgid "Save"
+msgstr "Yadda Saxla"
+
+msgid "Save Score"
+msgstr ""
+
+msgid "School"
+msgstr ""
+
+msgid "School Demographics"
+msgstr ""
+
+msgid "School news and events will appear here."
+msgstr ""
+
+msgid "School:"
+msgstr ""
+
+msgid "Score"
+msgstr "Qiymət"
+
+msgid "Search"
+msgstr "Axtar"
+
+msgid "Search by:"
+msgstr ""
+
+msgid "Search result for"
+msgstr "Arama nəticəsi:"
+
+msgid "Second Semester GPA:"
+msgstr ""
+
+msgid "Second Semester:"
+msgstr ""
+
+msgid "Second semester credit(s):"
+msgstr ""
+
+msgid "Select Your Course Here"
+msgstr ""
+
+msgid "Semester"
+msgstr "Semestr"
+
+msgid "Semester Add & update Form"
+msgstr ""
+
+msgid "Semester Form"
+msgstr ""
+
+msgid "Semester List"
+msgstr ""
+
+msgid "Semester list"
+msgstr ""
+
+msgid "Server error"
+msgstr "Server xətası"
+
+msgid "Session"
+msgstr "Sessiya"
+
+msgid "Session Add & update Form"
+msgstr ""
+
+msgid "Session Form"
+msgstr ""
+
+msgid "Session List"
+msgstr ""
+
+msgid "Sign In Here"
+msgstr ""
+
+msgid "Sign in"
+msgstr "Daxil ol"
+
+msgid "Start"
+msgstr "Başla"
+
+msgid "Start quiz"
+msgstr ""
+
+msgid "Student"
+msgstr "Tələbə"
+
+msgid "Student Add Form"
+msgstr ""
+
+msgid "Student Update Form"
+msgstr ""
+
+msgid "Student exam results"
+msgstr "Tələbənin imtahan nəticələri"
+
+msgid "Students result form"
+msgstr ""
+
+msgid "Summary"
+msgstr ""
+
+msgid "Supervisors"
+msgstr ""
+
+msgid "Switch"
+msgstr ""
+
+msgid "Take a Quiz"
+msgstr ""
+
+msgid "Taken"
+msgstr ""
+
+msgid "Taken Courses:"
+msgstr ""
+
+msgid "Tel No."
+msgstr ""
+
+msgid "Tel No.:"
+msgstr ""
+
+msgid "The previous question"
+msgstr "Əvvəlki sual"
+
+msgid "The result of this quiz will be stored in your progress section"
+msgstr ""
+
+msgid "This is the correct answer"
+msgstr ""
+
+msgid "This was your answer."
+msgstr ""
+
+msgid "Title or Description"
+msgstr ""
+
+msgid "Title, Code or Description"
+msgstr ""
+
+msgid "Title, Description or Category(practice, assignment and exam)"
+msgstr ""
+
+msgid "Title, Description or just by typing news or event"
+msgstr ""
+
+msgid "To manage scores, please select the course using the button above."
+msgstr ""
+
+msgid "Toggle whether correct"
+msgstr ""
+
+msgid "Total"
+msgstr "Cəmi"
+
+msgid "Total Credit:"
+msgstr ""
+
+msgid "Total complete exams"
+msgstr ""
+
+msgid "Total complete exams:"
+msgstr "Ümumi tamamlanmış imtahanlar:"
+
+msgid "Total credit(s):"
+msgstr ""
+
+msgid "Total first semester credit:"
+msgstr ""
+
+msgid "Total second semester credit:"
+msgstr ""
+
+msgid "Understood"
+msgstr "Başa düştüm"
+
+msgid "Update"
+msgstr "Yenilə"
+
+msgid "Update Profile"
+msgstr ""
+
+msgid "Updated Date"
+msgstr ""
+
+msgid "Upload"
+msgstr "Yüklə"
+
+msgid "Upload new file"
+msgstr ""
+
+msgid "Upload new video"
+msgstr ""
+
+msgid "Upload now."
+msgstr ""
+
+msgid "Uploaded Date"
+msgstr ""
+
+msgid "User"
+msgstr ""
+
+msgid "User Progress Page"
+msgstr "İstifadəçi Tərəqqi Səhifəsi"
+
+msgid "User answer"
+msgstr ""
+
+msgid "Video Title"
+msgstr ""
+
+msgid "Video Tutorials"
+msgstr ""
+
+msgid "Video Upload Form"
+msgstr "Video Yükləmə Forması"
+
+msgid "Video upload"
+msgstr "Video yükləmə"
+
+msgid "Video upload for"
+msgstr ""
+
+msgid "View details"
+msgstr ""
+
+msgid "Year"
+msgstr ""
+
+msgid "You answered"
+msgstr ""
+
+msgid "You answered the above question incorrectly"
+msgstr ""
+
+msgid ""
+"You can't go back to the previous question after you submit it, \n"
+"\t\t\t\tso double check your answer before proceeding to the next one!"
+msgstr ""
+
+msgid "You need the proper permission to make that request."
+msgstr ""
+
+msgid "You will only get one attempt at this quiz"
+msgstr ""
+
+msgid "Your answer"
+msgstr "Sizin cavabınız"
+
+msgid "Your answer was"
+msgstr ""
+
+msgid "Your password has been set, you are now able to Log In!"
+msgstr ""
+
+msgid "Your session score is"
+msgstr ""
+
+msgid "ago"
+msgstr "əvvəl"
+
+msgid "course allocations"
+msgstr ""
+
+msgid "events"
+msgstr ""
+
+msgid "for"
+msgstr ""
+
+msgid "forbidden"
+msgstr ""
+
+msgid "giving you"
+msgstr ""
+
+msgid "incorrect"
+msgstr ""
+
+msgid "news"
+msgstr ""
+
+msgid "of"
+msgstr "of"
+
+msgid "on a Mac, to select more than one."
+msgstr ""
+
+msgid "or"
+msgstr ""
+
+msgid "out of a possible"
+msgstr ""
+
+msgid "programs"
+msgstr ""
+
+msgid "question added"
+msgstr ""
+
+msgid "questions correctly out of"
+msgstr ""
+
+msgid "quiz"
+msgstr ""
+
+msgid "result"
+msgstr ""
+
+msgid "semesters"
+msgstr ""
+
+msgid "sessions"
+msgstr ""
+
+msgid "so you can review and monitor your progression"
+msgstr ""
+
+msgid "students"
+msgstr ""

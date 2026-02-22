@@ -1,0 +1,95 @@
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.Python
+env/
+venv/
+ENV/
+build/
+develop-eggs/
+dist/
+downloads/
+eggs/
+.eggs/
+lib/
+lib64/
+parts/
+sdist/
+var/
+wheels/
+*.egg-info/
+.installed.cfg
+*.egg
+
+# Django
+*.log
+local_settings.py
+db.sqlite3
+/media/
+/staticfiles/
+
+# IDE
+.idea/
+*.swp
+*.swo
+*~
+.DS_Store
+# VS Code settings are project-specific and should be shared
+# .vscode/ is excluded from this exclusion
+
+# Environment
+.env
+.env.local
+.env.*.local
+
+# Temporary files
+*.tmp
+*.bak
+*.backup
+*.cache
+
+# OS
+Thumbs.db
+.DS_Store
+.AppleDouble
+.LSOverride
+
+# Node (if any)
+node_modules/
+npm-debug.log
+yarn-error.log
+
+# Test coverage
+.coverage
+htmlcov/
+
+# mypy
+.mypy_cache/
+.dmypy.json
+dmypy.json
+
+# Poetry
+poetry.lock
+
+# Virtual environments
+.venv
+venv.bak/
+env.bak/
+
+# PyCharm
+.idea/
+*.iml
+
+# Sublime
+*.sublime-project
+*.sublime-workspace
+
+# Scripts (temporary compilation scripts)
+SkyLearn/compile_messages.py
+SkyLearn/extract_trans.py
+SkyLearn/add_az_translations.py
+
+# Keep only project root .gitignore
+SkyLearn/.gitignore

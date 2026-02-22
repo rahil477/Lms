@@ -1,0 +1,79 @@
+{% extends 'base.html' %}
+{% load i18n %}
+
+{% block content %}
+<nav style="--bs-breadcrumb-divider: '>';" aria-label="breadcrumb">
+    <ol class="breadcrumb">
+        <li class="breadcrumb-item"><a href="/">{% trans 'Home' %}</a></li>
+        <li class="breadcrumb-item active" aria-current="page">{% trans 'My Attendance' %}</li>
+    </ol>
+</nav>
+
+<div class="title-1">{% trans 'My Attendance Report' %}</div>
+
+<div class="row mt-4">
+    {% for item in report %}
+    <div class="col-md-6 mb-4">
+        <div class="card h-100 shadow-sm border-0">
+            <div class="card-header bg-white border-bottom py-3">
+                <h5 class="mb-0 text-primary">{{ item.course.title }}</h5>
+                <small class="text-muted">{{ item.course.code }}</small>
+            </div>
+            <div class="card-body">
+                <div class="row text-center">
+                    <div class="col-4 border-end">
+                        <div class="h3 mb-0">{{ item.total_days }}</div>
+                        <small class="text-muted">{% trans 'Total Sessions' %}</small>
+                    </div>
+                    <div class="col-4 border-end">
+                        <div class="h3 mb-0 text-success">{{ item.present_count }}</div>
+                        <small class="text-muted">{% trans 'Present' %}</small>
+                    </div>
+                    <div class="col-4">
+                        <div class="h3 mb-0 text-danger">{{ item.absent_count }}</div>
+                        <small class="text-muted">{% trans 'Absent' %}</small>
+                    </div>
+                </div>
+
+                <div class="mt-4">
+                    <div class="d-flex justify-content-between mb-1">
+                        <span class="small font-weight-bold">{% trans 'Attendance Rate' %}</span>
+                        <span class="small font-weight-bold">{{ item.percentage }}%</span>
+                    </div>
+                    <div class="progress" style="height: 10px;">
+                        {% if item.percentage < 75 %} <div class="progress-bar bg-danger js-progress-bar"
+                            role="progressbar" data-width="{{ item.percentage }}%" aria-valuenow="{{ item.percentage }}"
+                            aria-valuemin="0" aria-valuemax="100">
+                    </div>
+                    {% elif item.percentage < 90 %} <div class="progress-bar bg-warning js-progress-bar"
+                        role="progressbar" data-width="{{ item.percentage }}%" aria-valuenow="{{ item.percentage }}"
+                        aria-valuemin="0" aria-valuemax="100">
+                </div>
+                {% else %}
+                <div class="progress-bar bg-success js-progress-bar" role="progressbar"
+                    data-width="{{ item.percentage }}%" aria-valuenow="{{ item.percentage }}" aria-valuemin="0"
+                    aria-valuemax="100"></div>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+</div>
+</div>
+{% empty %}
+<div class="col-12 text-center py-5">
+    <h4 class="text-muted">{% trans 'You are not enrolled in any courses.' %}</h4>
+</div>
+{% endfor %}
+</div>
+
+<script>
+    document.addEventListener("DOMContentLoaded", function () {
+        document.querySelectorAll('.js-progress-bar').forEach(function (bar) {
+            var width = bar.getAttribute('data-width');
+            if (width) {
+                bar.style.width = width;
+            }
+        });
+    });
+</script>
+{% endblock content %}
