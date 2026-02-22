@@ -9,7 +9,7 @@ from django.core.validators import (
 )
 from django.db import models
 from django.db.models import Q
-from django.db.models.signals import pre_save
+from django.db.models.signals import pre_save, post_save
 from django.urls import reverse
 from django.utils.timezone import now
 from django.utils.translation import gettext_lazy as _
@@ -305,6 +305,33 @@ class Sitting(models.Model):
         self.complete = True
         self.end = now()
         self.save()
+
+@receiver(post_save, sender=Sitting)
+def update_taken_course_quiz_score(sender, instance, **kwargs):
+    if instance.complete:
+        from result.models import TakenCourse
+        from accounts.models import Student
+        
+        student = Student.objects.filter(student=instance.user).first()
+        if student:
+            taken_course = TakenCourse.objects.filter(
+                student=student, course=instance.course
+            ).first()
+            
+            if taken_course:
+                # Calculate average percentage across all completed quizzes for this course
+                sittings = Sitting.objects.filter(
+                    user=instance.user, course=instance.course, complete=True
+                )
+                total_percent = 0
+                count = sittings.count()
+                
+                if count > 0:
+                    for s in sittings:
+                        total_percent += s.get_percent_correct
+                    
+                    taken_course.quiz = total_percent / count
+                    taken_course.save()
 
     def add_incorrect_question(self, question):
         incorrect_ids = self.get_incorrect_questions

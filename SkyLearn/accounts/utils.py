@@ -2,11 +2,12 @@ import threading
 from datetime import datetime
 from django.contrib.auth import get_user_model
 from django.conf import settings
+from django.utils.crypto import get_random_string
 from core.utils import send_html_email
 
 
 def generate_password():
-    return get_user_model().objects.make_random_password()
+    return get_random_string(length=10)
 
 
 def generate_student_id():

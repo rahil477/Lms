@@ -87,8 +87,15 @@ class Semester(models.Model):
 
 
 class ActivityLog(models.Model):
+    user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.SET_NULL, null=True, blank=True)
     message = models.TextField()
     created_at = models.DateTimeField(auto_now=True)
+
+    def save(self, *args, **kwargs):
+        if not self.user:
+            from core.middleware import get_current_user
+            self.user = get_current_user()
+        super().save(*args, **kwargs)
 
     def __str__(self):
         return f"[{self.created_at}]{self.message}"

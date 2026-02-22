@@ -7,7 +7,7 @@ from django.dispatch import receiver
 from django.urls import reverse
 from django.utils.translation import gettext_lazy as _
 
-from core.models import ActivityLog, Semester
+from core.models import ActivityLog, Semester, Notification
 from core.utils import unique_slug_generator
 
 
@@ -31,6 +31,15 @@ class Program(models.Model):
 
     def get_absolute_url(self):
         return reverse("program_detail", kwargs={"pk": self.pk})
+
+
+class ClassGroup(models.Model):
+    title = models.CharField(max_length=100, unique=True)
+    program = models.ForeignKey(Program, on_delete=models.CASCADE, related_name='groups')
+    created_at = models.DateTimeField(auto_now_add=True)
+
+    def __str__(self):
+        return self.title
 
 
 @receiver(post_save, sender=Program)
@@ -69,6 +78,20 @@ class Course(models.Model):
     year = models.IntegerField(choices=settings.YEARS, default=1)
     semester = models.CharField(choices=settings.SEMESTER_CHOICES, max_length=200)
     is_elective = models.BooleanField(default=False)
+    
+    DURATION_CHOICES = (
+        (6, _("6 Months")),
+        (8, _("8 Months")),
+        (9, _("9 Months")),
+    )
+    duration = models.IntegerField(choices=DURATION_CHOICES, default=6)
+    
+    # Grading Weights (Percentages)
+    final_exam_weight = models.DecimalField(max_digits=5, decimal_places=2, default=40.0)
+    mid_exam_weight = models.DecimalField(max_digits=5, decimal_places=2, default=20.0)
+    assignment_weight = models.DecimalField(max_digits=5, decimal_places=2, default=15.0)
+    quiz_weight = models.DecimalField(max_digits=5, decimal_places=2, default=15.0)
+    attendance_weight = models.DecimalField(max_digits=5, decimal_places=2, default=10.0)
 
     objects = CourseManager()
 
@@ -109,6 +132,7 @@ class CourseAllocation(models.Model):
         related_name="allocated_lecturer",
     )
     courses = models.ManyToManyField(Course, related_name="allocated_course")
+    group = models.ForeignKey(ClassGroup, on_delete=models.CASCADE, related_name="allocations", null=True, blank=True)
     session = models.ForeignKey(
         "core.Session", on_delete=models.CASCADE, blank=True, null=True
     )
@@ -176,6 +200,21 @@ def log_upload_save(sender, instance, created, **kwargs):
         message = _(
             f"The file '{instance.title}' has been uploaded to the course '{instance.course}'."
         )
+        
+        # Notify all enrolled students
+        from accounts.models import Student
+        students = Student.objects.filter(taken_courses__course=instance.course)
+        notifications = [
+            Notification(
+                user=student.student,
+                verb=_("New material uploaded"),
+                description=message,
+                target_url=instance.course.get_absolute_url()
+            ) for student in students
+        ]
+        if notifications:
+            Notification.objects.bulk_create(notifications)
+            
     else:
         message = _(
             f"The file '{instance.title}' of the course '{instance.course}' has been updated."
@@ -231,6 +270,19 @@ def log_uploadvideo_save(sender, instance, created, **kwargs):
         message = _(
             f"The video '{instance.title}' has been uploaded to the course '{instance.course}'."
         )
+        # Notify all enrolled students
+        from accounts.models import Student
+        students = Student.objects.filter(taken_courses__course=instance.course)
+        notifications = [
+            Notification(
+                user=student.student,
+                verb=_("New video uploaded"),
+                description=message,
+                target_url=instance.get_absolute_url()
+            ) for student in students
+        ]
+        if notifications:
+            Notification.objects.bulk_create(notifications)
     else:
         message = _(
             f"The video '{instance.title}' of the course '{instance.course}' has been updated."
@@ -247,7 +299,75 @@ def log_uploadvideo_delete(sender, instance, **kwargs):
     )
 
 
-class CourseOffer(models.Model):
+class Assignment(models.Model):
+    course = models.ForeignKey(Course, on_delete=models.CASCADE, related_name="assignments")
+    title = models.CharField(max_length=200)
+    description = models.TextField(blank=True)
+    file = models.FileField(
+        upload_to="assignment_files/",
+        blank=True,
+        null=True,
+        help_text=_("Optional attachment for the assignment.")
+    )
+    due_date = models.DateTimeField()
+    created_at = models.DateTimeField(auto_now_add=True)
+    updated_at = models.DateTimeField(auto_now=True)
+    
+    def __str__(self):
+        return f"{self.title} - {self.course.code}"
+        
+@receiver(post_save, sender=Assignment)
+def log_assignment_save(sender, instance, created, **kwargs):
+    verb = "created a new assignment" if created else "updated assignment"
+    ActivityLog.objects.create(message=_(f"The course '{instance.course.title}' has {verb}: '{instance.title}'."))
+    if created:
+        from accounts.models import Student
+        students = Student.objects.filter(taken_courses__course=instance.course)
+        notifications = [
+            Notification(
+                user=s.student,
+                verb=_("YENİ TAPŞIRIQ"),
+                description=f"{instance.course.title} fənnindən yeni tapşırıq: {instance.title}. Son tarix: {instance.due_date.strftime('%d %M %Y, %H:%M')}",
+            ) for s in students
+        ]
+        if notifications:
+            Notification.objects.bulk_create(notifications)
+
+
+class AssignmentSubmission(models.Model):
+    assignment = models.ForeignKey(Assignment, on_delete=models.CASCADE, related_name="submissions")
+    student = models.ForeignKey("accounts.Student", on_delete=models.CASCADE, related_name="assignments_submitted")
+    file = models.FileField(upload_to="assignment_submissions/")
+    comments = models.TextField(blank=True, help_text=_("Optional comments by the student."))
+    points_awarded = models.DecimalField(max_digits=5, decimal_places=2, null=True, blank=True)
+    submitted_at = models.DateTimeField(auto_now_add=True)
+    updated_at = models.DateTimeField(auto_now=True)
+
+    class Meta:
+        unique_together = ('assignment', 'student')
+        
+    def __str__(self):
+        return f"{self.student} submission for {self.assignment.title}"
+
+@receiver(post_save, sender=AssignmentSubmission)
+def update_taken_course_assignment_score(sender, instance, **kwargs):
+    if instance.points_awarded is not None:
+        from result.models import TakenCourse
+        from django.db.models import Avg
+        taken_course = TakenCourse.objects.filter(
+            student=instance.student, course=instance.assignment.course
+        ).first()
+
+        if taken_course:
+            # Average points from all marked assignments in this course
+            avg_point = AssignmentSubmission.objects.filter(
+                student=instance.student, 
+                assignment__course=instance.assignment.course,
+                points_awarded__isnull=False
+            ).aggregate(Avg('points_awarded'))['points_awarded__avg'] or 0
+            
+            taken_course.assignment = avg_point
+            taken_course.save()
     """NOTE: Only department head can offer semester courses"""
 
     dep_head = models.ForeignKey("accounts.DepartmentHead", on_delete=models.CASCADE)

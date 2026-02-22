@@ -1,0 +1,46 @@
+{% extends 'base.html' %}
+{% load crispy_forms_tags %}
+
+{% block content %}
+<div class="container mt-4">
+    <div class="row justify-content-center">
+        <div class="col-md-8">
+            <div class="card shadow rounded">
+                <div class="card-header bg-success text-white">
+                    <h4 class="mb-0">Submit Assignment: {{ assignment.title }}</h4>
+                </div>
+                <div class="card-body">
+                    <p class="text-muted"><strong>Due Date:</strong> {{ assignment.due_date|date:"d M Y, H:i" }}</p>
+                    <p>{{ assignment.description }}</p>
+
+                    {% if assignment.file %}
+                    <a href="{{ assignment.file.url }}" class="btn btn-sm btn-outline-info mb-3" target="_blank"><i
+                            class="fas fa-download"></i> Download Attachment</a>
+                    {% endif %}
+
+                    <hr>
+
+                    {% if submission %}
+                    <div class="alert alert-info">
+                        <strong>Status:</strong> Submitted on {{ submission.submitted_at|date:"d M Y, H:i" }}
+                        {% if submission.points_awarded %}
+                        <br><strong>Grade:</strong> {{ submission.points_awarded }} / 100
+                        {% endif %}
+                    </div>
+                    {% endif %}
+
+                    <form method="POST" enctype="multipart/form-data">
+                        {% csrf_token %}
+                        {{ form|crispy }}
+                        <div class="d-flex justify-content-between mt-3">
+                            <a href="{% url 'course_detail' course.slug %}" class="btn btn-secondary">Back to Course</a>
+                            <button type="submit" class="btn btn-primary">{% if submission %}Update Submission{% else
+                                %}Submit{% endif %}</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock content %}

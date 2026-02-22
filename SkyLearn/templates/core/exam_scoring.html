@@ -1,0 +1,120 @@
+{% load i18n %}
+<div class="exam-wrapper">
+    <div class="table-responsive">
+        <table class="table table-bordered text-center align-middle exam-table">
+            <thead class="bg-dark text-white">
+                <tr>
+                    <th>{% trans 'Tələbə' %}</th>
+                    <th>{% trans 'Yekun İmtahan' %} (0-50)</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for student in students %}
+                <tr>
+                    <td class="text-start ps-3">{{ student.student.get_full_name }}</td>
+                    <td>
+                        <div class="exam-cell" data-student="{{ student.id }}" data-locked="false">
+                            <span class="exam-badge exam-none">d/e</span>
+                        </div>
+                    </td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+</div>
+
+<!-- Exam Pop-up -->
+<div id="exam-popup" class="exam-popup shadow d-none">
+    <div class="p-3">
+        <label class="form-label small">{% trans 'Qiyməti daxil edin (0-50):' %}</label>
+        <div class="input-group input-group-sm mb-2">
+            <input type="number" id="exam-input" class="form-control" min="0" max="50">
+            <button class="btn btn-primary" id="exam-save">{% trans 'Yadda saxla' %}</button>
+        </div>
+    </div>
+</div>
+
+<style>
+    .exam-cell {
+        cursor: pointer;
+        padding: 10px;
+        border-radius: 4px;
+        border: 1px dashed #ccc;
+    }
+
+    .exam-cell:hover {
+        background-color: #f8f9fa;
+    }
+
+    .exam-badge {
+        font-weight: bold;
+        padding: 5px 15px;
+        border-radius: 4px;
+    }
+
+    .exam-none {
+        color: #aaa;
+        font-style: italic;
+    }
+
+    .exam-set {
+        background-color: #000;
+        color: #fff;
+    }
+
+    .exam-popup {
+        position: absolute;
+        background: white;
+        border: 1px solid #333;
+        z-index: 1000;
+        border-radius: 8px;
+        min-width: 250px;
+    }
+</style>
+
+<script>
+    (function () {
+        const cells = document.querySelectorAll('.exam-cell');
+        const popup = document.getElementById('exam-popup');
+        const input = document.getElementById('exam-input');
+        const saveBtn = document.getElementById('exam-save');
+        let currentCell = null;
+
+        cells.forEach(cell => {
+            cell.addEventListener('click', function (e) {
+                if (this.dataset.locked === 'true') {
+                    if (typeof showAlert === 'function') showAlert();
+                    else alert("{% trans 'Bu əməliyyat üçün hüququnuz yoxdur' %}");
+                    return;
+                }
+
+                currentCell = this;
+                const rect = this.getBoundingClientRect();
+                popup.style.top = (window.scrollY + rect.bottom) + 'px';
+                popup.style.left = (window.scrollX + rect.left) + 'px';
+                popup.classList.remove('d-none');
+                input.focus();
+            });
+        });
+
+        saveBtn.addEventListener('click', function () {
+            const val = input.value;
+            if (val === "" || val < 0 || val > 50) {
+                alert("{% trans 'Zəhmət olmasa 0-50 arası rəqəm daxil edin.' %}");
+                return;
+            }
+            updateExamCell(currentCell, val);
+            popup.classList.add('d-none');
+            input.value = "";
+        });
+
+        function updateExamCell(cell, val) {
+            const span = cell.querySelector('span');
+            span.className = 'exam-badge exam-set';
+            span.textContent = val;
+            cell.dataset.locked = 'true';
+            console.log('Saving Final Exam score:', cell.dataset.student, val);
+        }
+    })();
+</script>

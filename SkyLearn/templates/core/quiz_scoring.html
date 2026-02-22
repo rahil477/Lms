@@ -1,0 +1,146 @@
+{% load i18n %}
+<div class="scoring-wrapper">
+    <div class="table-responsive">
+        <table class="table table-bordered text-center align-middle scoring-table">
+            <thead class="bg-info text-white">
+                <tr>
+                    <th>{% trans 'Tələbə' %}</th>
+                    {% for m in months %}
+                    <th>{% trans 'Ay' %} {{ m }}</th>
+                    {% endfor %}
+                </tr>
+            </thead>
+            <tbody>
+                {% for student in students %}
+                <tr>
+                    <td class="text-start ps-3">{{ student.student.get_full_name }}</td>
+                    {% for m in months %}
+                    <td>
+                        <div class="score-cell" data-student="{{ student.id }}" data-month="{{ m }}"
+                            data-locked="false">
+                            <span class="score-badge score-none">d/e</span>
+                        </div>
+                    </td>
+                    {% endfor %}
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+</div>
+
+<!-- Quiz Pop-up -->
+<div id="quiz-popup" class="quiz-popup shadow d-none">
+    <div class="p-2 d-flex gap-1 flex-wrap justify-content-center" style="max-width: 150px;">
+        <button class="btn btn-sm quiz-choice score-0" data-val="0">0</button>
+        <button class="btn btn-sm quiz-choice score-1" data-val="1">1</button>
+        <button class="btn btn-sm quiz-choice score-2" data-val="2">2</button>
+        <button class="btn btn-sm quiz-choice score-3" data-val="3">3</button>
+        <button class="btn btn-sm quiz-choice score-4" data-val="4">4</button>
+        <button class="btn btn-sm quiz-choice score-5" data-val="5">5</button>
+    </div>
+</div>
+
+<style>
+    .score-cell {
+        cursor: pointer;
+        padding: 5px;
+        border-radius: 4px;
+    }
+
+    .score-cell:hover {
+        background-color: #f0f0f0;
+    }
+
+    .score-badge {
+        font-weight: bold;
+        padding: 3px 8px;
+        border-radius: 3px;
+        display: block;
+    }
+
+    .score-none {
+        color: #888;
+    }
+
+    /* Colors for 0-5 */
+    .score-0 {
+        background-color: #6c757d;
+        color: white;
+    }
+
+    .score-1 {
+        background-color: #f44336;
+        color: white;
+    }
+
+    .score-2 {
+        background-color: #ff9800;
+        color: white;
+    }
+
+    .score-3 {
+        background-color: #ffc107;
+        color: black;
+    }
+
+    .score-4 {
+        background-color: #8bc34a;
+        color: white;
+    }
+
+    .score-5 {
+        background-color: #4caf50;
+        color: white;
+    }
+
+    .quiz-popup {
+        position: absolute;
+        background: white;
+        border: 1px solid #ccc;
+        z-index: 1000;
+        border-radius: 8px;
+    }
+</style>
+
+<script>
+    (function () {
+        const cells = document.querySelectorAll('.score-cell');
+        const popup = document.getElementById('quiz-popup');
+        const alertPopup = document.getElementById('alert-popup'); // Re-uses the one in journal or needs one here
+        let currentCell = null;
+
+        cells.forEach(cell => {
+            cell.addEventListener('click', function (e) {
+                if (this.dataset.locked === 'true') {
+                    // Trigger global or local alert
+                    if (typeof showAlert === 'function') showAlert();
+                    else alert("{% trans 'Bu əməliyyat üçün hüququnuz yoxdur' %}");
+                    return;
+                }
+
+                currentCell = this;
+                const rect = this.getBoundingClientRect();
+                popup.style.top = (window.scrollY + rect.bottom) + 'px';
+                popup.style.left = (window.scrollX + rect.left) + 'px';
+                popup.classList.remove('d-none');
+            });
+        });
+
+        document.querySelectorAll('.quiz-choice').forEach(btn => {
+            btn.addEventListener('click', function () {
+                const val = this.dataset.val;
+                updateScoreCell(currentCell, val);
+                popup.classList.add('d-none');
+            });
+        });
+
+        function updateScoreCell(cell, val) {
+            const span = cell.querySelector('span');
+            span.className = 'score-badge score-' + val;
+            span.textContent = val;
+            cell.dataset.locked = 'true';
+            console.log('Saving Month Quiz score:', cell.dataset.student, cell.dataset.month, val);
+        }
+    })();
+</script>

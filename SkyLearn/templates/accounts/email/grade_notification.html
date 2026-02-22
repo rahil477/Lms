@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <style>
+        .container {
+            max-width: 600px;
+            margin: 20px auto;
+            padding: 20px;
+            border: 1px solid #e1e8ed;
+            border-radius: 12px;
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+            background-color: #ffffff;
+        }
+
+        .header {
+            color: #1a1a1b;
+            font-size: 20px;
+            font-weight: 700;
+            margin-bottom: 20px;
+            border-bottom: 2px solid #f0f2f5;
+            padding-bottom: 10px;
+        }
+
+        .content {
+            color: #4a4a4a;
+            line-height: 1.6;
+            font-size: 16px;
+        }
+
+        .score-box {
+            background-color: #f8f9fa;
+            border-radius: 8px;
+            padding: 20px;
+            text-align: center;
+            margin: 20px 0;
+            border: 1px dashed #ced4da;
+        }
+
+        .score {
+            font-size: 32px;
+            color: #0d6efd;
+            font-weight: 800;
+        }
+
+        .grade {
+            font-size: 18px;
+            color: #6c757d;
+            margin-top: 5px;
+        }
+
+        .footer {
+            margin-top: 30px;
+            font-size: 12px;
+            color: #abb8c3;
+            text-align: center;
+            border-top: 1px solid #f0f2f5;
+            padding-top: 15px;
+        }
+
+        .btn {
+            display: inline-block;
+            padding: 10px 20px;
+            background-color: #0d6efd;
+            color: #ffffff !important;
+            text-decoration: none;
+            border-radius: 6px;
+            font-weight: 600;
+            margin-top: 10px;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="container">
+        <div class="header">SkyLearn - Qiymət Bildirişi</div>
+        <div class="content">
+            <p>Salam, <strong>{{ student.student.get_full_name }}</strong>!</p>
+            <p>Sizin <strong>{{ course.title }}</strong> fənnindən qiymətiniz {{ verb }}.</p>
+
+            <div class="score-box">
+                <div class="score">{{ total }}</div>
+                {% if grade != "-" %}<div class="grade">Hərf qiyməti: {{ grade }}</div>{% endif %}
+            </div>
+
+            <p>Daha ətraflı məlumat üçün və digər nəticələrini görmək üçün tələbə panelinə daxil ola bilərsiniz.</p>
+
+            <div style="text-align: center;">
+                <a href="{{ site_url }}" class="btn">Panelə Daxil Ol</a>
+            </div>
+        </div>
+        <div class="footer">
+            Bu avtomatik göndərilmiş bildirişdir. Zəhmət olmasa bu email-ə cavab yazmayın.<br>
+            SkyLearn © {% now "Y" %}
+        </div>
+    </div>
+</body>
+
+</html>

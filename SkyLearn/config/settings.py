@@ -28,15 +28,8 @@ SECRET_KEY = config(
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = config("DEBUG", default=True, cast=bool)
 
-ALLOWED_HOSTS = [
-    "127.0.0.1",
-    "192.168.1.89",
-    "localhost",
-    "adilmohak1.pythonanywhere.com",
-    "tonnish-elin-aweigh.ngrok-free.dev",
-    "*.ngrok-free.dev",  # Allow all ngrok domains
-    "*.ngrok.io",  # Allow all ngrok domains
-]
+env_allowed_hosts = config("ALLOWED_HOSTS", default="127.0.0.1, 192.168.1.89, localhost, *.ngrok-free.dev, *.ngrok.io")
+ALLOWED_HOSTS = [host.strip() for host in env_allowed_hosts.split(",") if host.strip()]
 
 # change the default user models to our custom model
 AUTH_USER_MODEL = "accounts.User"
@@ -70,7 +63,6 @@ PROJECT_APPS = [
     "result.apps.ResultConfig",
     "search.apps.SearchConfig",
     "quiz.apps.QuizConfig",
-    "payments.apps.PaymentsConfig",
     "attendance.apps.AttendanceConfig",
 ]
 
@@ -87,17 +79,12 @@ MIDDLEWARE = [
     "django.middleware.clickjacking.XFrameOptionsMiddleware",
     "django.middleware.locale.LocaleMiddleware",
     "whitenoise.middleware.WhiteNoiseMiddleware",  # whitenoise to serve static files
+    "core.middleware.ActivityLogMiddleware",
 ]
 
 # CSRF Configuration
-CSRF_TRUSTED_ORIGINS = [
-    "https://tonnish-elin-aweigh.ngrok-free.dev",
-    "https://*.ngrok-free.dev",
-    "https://*.ngrok.io",
-    "http://192.168.1.89:8000",
-    "http://127.0.0.1:8000",
-    "http://localhost:8000",
-]
+env_csrf_origins = config("CSRF_TRUSTED_ORIGINS", default="")
+CSRF_TRUSTED_ORIGINS = [origin.strip() for origin in env_csrf_origins.split(",") if origin.strip()]
 
 ROOT_URLCONF = "config.urls"
 

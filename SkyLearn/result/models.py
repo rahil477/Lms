@@ -74,6 +74,21 @@ GRADE_POINT_MAPPING = {
 }
 
 
+class MonthlyQuizScore(models.Model):
+    student = models.ForeignKey(Student, on_delete=models.CASCADE, related_name="monthly_quiz_scores")
+    course = models.ForeignKey(Course, on_delete=models.CASCADE)
+    month_number = models.IntegerField(help_text="1 to 9")
+    score = models.DecimalField(max_digits=4, decimal_places=2, default=Decimal("0.00"), help_text="Max score per month depends on duration (3, 4, or 5)")
+    is_locked = models.BooleanField(default=False)
+    updated_at = models.DateTimeField(auto_now=True)
+
+    class Meta:
+        unique_together = ("student", "course", "month_number")
+
+    def __str__(self):
+        return f"{self.student} - {self.course} - Month {self.month_number}: {self.score}"
+
+
 class TakenCourse(models.Model):
     student = models.ForeignKey(Student, on_delete=models.CASCADE)
     course = models.ForeignKey(
@@ -104,6 +119,8 @@ class TakenCourse(models.Model):
     comment = models.CharField(
         choices=COMMENT_CHOICES, max_length=200, blank=True, editable=False
     )
+    # Locking for Teacher (Admin can override)
+    is_final_exam_locked = models.BooleanField(default=False)
 
     def get_absolute_url(self):
         return reverse("course_detail", kwargs={"slug": self.course.slug})
@@ -112,15 +129,32 @@ class TakenCourse(models.Model):
         return f"{self.course.title} ({self.course.code})"
 
     def get_total(self):
-        return sum(
-            [
-                Decimal(self.assignment),
-                Decimal(self.mid_exam),
-                Decimal(self.quiz),
-                Decimal(self.attendance),
-                Decimal(self.final_exam),
-            ]
-        )
+        # 50/50 Split logic based on course duration
+        duration = self.course.duration
+        
+        # 1. Final Exam (50 points)
+        final_score = Decimal(self.final_exam)
+        
+        # 2. Activity/Attendance
+        # Daily activity logic: users mentioned specific values for different durations
+        # 6 mo: 20 pts, 8 mo: 18 pts, 9 mo: 23 pts
+        activity_weight = Decimal("20.00")
+        if duration == 8:
+            activity_weight = Decimal("18.00")
+        elif duration == 9:
+            activity_weight = Decimal("23.00")
+        
+        # Current logic uses self.attendance as a 0-100 scale usually
+        # We'll treat self.attendance as the percentage of activity/attendance points earned
+        earned_activity = (Decimal(self.attendance) * activity_weight) / Decimal("100.00")
+        
+        # 3. Monthly Quizzes
+        # 6 mo: 30 pts (6x5), 8 mo: 32 pts (8x4), 9 mo: 27 pts (9x3)
+        monthly_scores = MonthlyQuizScore.objects.filter(student=self.student, course=self.course)
+        earned_quiz = sum([s.score for s in monthly_scores])
+        
+        # self.quiz field will be synced from the sum of monthly scores for backwards compatibility/display
+        return final_score + earned_activity + earned_quiz
 
     def get_grade(self):
         total = self.total

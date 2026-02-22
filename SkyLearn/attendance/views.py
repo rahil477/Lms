@@ -70,6 +70,22 @@ def take_attendance(request, course_id):
         
         if lock_immediately:
             messages.success(request, f"{date} tarixi üçün jurnal təsdiqləndi və kilidləndi.")
+            
+            # Notify students
+            from core.models import Notification
+            from django.utils.translation import gettext_lazy as _
+            notifications = []
+            for student in students:
+                notifications.append(
+                    Notification(
+                        user=student.student,
+                        verb=_("E-Jurnal təsdiqləndi"),
+                        description=f"{course.title} fənni üzrə {date} tarixli jurnala qeydləriniz yazıldı.",
+                        target_url=request.path
+                    )
+                )
+            if notifications:
+                Notification.objects.bulk_create(notifications)
         else:
             messages.success(request, f"{date} tarixi üçün jurnal yadda saxlanıldı.")
         return redirect('attendance_course_list')

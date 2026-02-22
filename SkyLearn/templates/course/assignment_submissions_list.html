@@ -1,0 +1,72 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<div class="container mt-4">
+    <nav aria-label="breadcrumb">
+        <ol class="breadcrumb">
+            <li class="breadcrumb-item"><a href="{% url 'course_detail' course.slug %}">{{ course.title }}</a></li>
+            <li class="breadcrumb-item active" aria-current="page">Submissions: {{ assignment.title }}</li>
+        </ol>
+    </nav>
+
+    <div class="card shadow-sm">
+        <div class="card-header bg-dark text-white">
+            <h4 class="mb-0">Student Submissions</h4>
+        </div>
+        <div class="card-body p-0">
+            <div class="table-responsive">
+                <table class="table table-hover mb-0 text-center">
+                    <thead class="table-light">
+                        <tr>
+                            <th>Student</th>
+                            <th>Submitted At</th>
+                            <th>File</th>
+                            <th>Comments</th>
+                            <th>Grade (Out of 100)</th>
+                            <th>Action</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for sub in submissions %}
+                        <tr>
+                            <td class="align-middle">{{ sub.student.student.get_full_name }} ({{
+                                sub.student.student.username }})</td>
+                            <td class="align-middle">{{ sub.submitted_at|date:"d M Y, H:i" }}</td>
+                            <td class="align-middle">
+                                {% if sub.file %}
+                                <a href="{{ sub.file.url }}" target="_blank" class="btn btn-sm btn-primary"><i
+                                        class="fas fa-file-download"></i> View File</a>
+                                {% else %}
+                                <span class="text-muted">No File</span>
+                                {% endif %}
+                            </td>
+                            <td class="align-middle text-start" style="max-width: 250px;">{{
+                                sub.comments|truncatechars:50|default:"-" }}</td>
+
+                            <form method="POST">
+                                {% csrf_token %}
+                                <td class="align-middle">
+                                    <input type="hidden" name="submission_id" value="{{ sub.id }}">
+                                    <input type="number" step="0.01" name="points"
+                                        class="form-control form-control-sm text-center"
+                                        value="{{ sub.points_awarded|default_if_none:'' }}" min="0" max="100" required>
+                                </td>
+                                <td class="align-middle">
+                                    <button type="submit" class="btn btn-sm btn-success"><i class="fas fa-check"></i>
+                                        Save Grade</button>
+                                </td>
+                            </form>
+                        </tr>
+                        {% empty %}
+                        <tr>
+                            <td colspan="6" class="text-center py-4 text-muted">No submissions yet for this assignment.
+                            </td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock content %}

@@ -52,10 +52,8 @@
 		{% url 'attendance_course_list' as att_list %}
 		{% url 'student_attendance_report' as stu_att %}
 		<ul>
-			{% if request.user.is_superuser %}
 			<li class="{% if request.path == dash %}active{% endif %}"><a href="{% url 'dashboard' %}"><i
 						class="fas fa-tachometer-alt"></i>{% trans 'Dashboard' %}</a></li>
-			{% endif %}
 			<li class="{% if request.path == hom %}active{% endif %}"><a href="{% url 'home' %}"><i
 						class="fas fa-home"></i>{% trans 'Home' %}</a></li>
 			<li class="{% if request.path == prof %}active{% endif %}"><a href="{% url 'profile' %}"><i

@@ -1,6 +1,6 @@
 from django import forms
 from accounts.models import User
-from .models import Program, Course, CourseAllocation, Upload, UploadVideo
+from .models import Program, Course, CourseAllocation, Upload, UploadVideo, Assignment, AssignmentSubmission
 
 
 class ProgramForm(forms.ModelForm):
@@ -92,7 +92,6 @@ class UploadFormFile(forms.ModelForm):
         self.fields["file"].widget.attrs.update({"class": "form-control"})
 
 
-# Upload video to specific course
 class UploadFormVideo(forms.ModelForm):
     class Meta:
         model = UploadVideo
@@ -105,3 +104,29 @@ class UploadFormVideo(forms.ModelForm):
         super().__init__(*args, **kwargs)
         self.fields["title"].widget.attrs.update({"class": "form-control"})
         self.fields["video"].widget.attrs.update({"class": "form-control"})
+
+
+class AssignmentForm(forms.ModelForm):
+    class Meta:
+        model = Assignment
+        fields = ("title", "description", "file", "due_date")
+        widgets = {
+            "due_date": forms.DateTimeInput(attrs={"type": "datetime-local", "class": "form-control"}),
+        }
+
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        self.fields["title"].widget.attrs.update({"class": "form-control"})
+        self.fields["description"].widget.attrs.update({"class": "form-control"})
+        self.fields["file"].widget.attrs.update({"class": "form-control"})
+
+
+class AssignmentSubmissionForm(forms.ModelForm):
+    class Meta:
+        model = AssignmentSubmission
+        fields = ("file", "comments")
+
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        self.fields["file"].widget.attrs.update({"class": "form-control"})
+        self.fields["comments"].widget.attrs.update({"class": "form-control", "rows": 3})

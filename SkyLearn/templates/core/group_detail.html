@@ -1,0 +1,201 @@
+{% extends 'base.html' %}
+{% load i18n %}
+{% load static %}
+
+{% block title %} {{ group.title }} | {% trans 'Learning management system' %} {% endblock title %}
+
+{% block content %}
+<nav style="--bs-breadcrumb-divider: '>';" aria-label="breadcrumb">
+    <ol class="breadcrumb">
+        <li class="breadcrumb-item"><a href="/">{% trans 'Home' %}</a></li>
+        <li class="breadcrumb-item"><a href="{% url 'dashboard' %}">{% trans 'Dashboard' %}</a></li>
+        <li class="breadcrumb-item active" aria-current="page">{{ group.title }}</li>
+    </ol>
+</nav>
+
+<div class="d-flex justify-content-between align-items-center mb-3">
+    <div class="group-badge bg-danger text-white px-3 py-1 rounded">
+        {{ group.title }}
+    </div>
+    <a href="{% url 'dashboard' %}" class="btn btn-primary btn-sm">
+        <i class="fas fa-arrow-left"></i> {% trans 'Fənlər siyahısı' %}
+    </a>
+</div>
+
+<div class="card shadow-sm border-0">
+    <div class="card-header bg-white p-0">
+        <ul class="nav nav-tabs border-0" id="groupTabs" role="tablist">
+            <li class="nav-item" role="presentation">
+                <button class="nav-link active" id="home-tab" data-bs-toggle="tab" data-bs-target="#home" type="button"
+                    role="tab">{% trans 'Ana səhifə' %}</button>
+            </li>
+            <li class="nav-item" role="presentation">
+                <button class="nav-link" id="topics-tab" data-bs-toggle="tab" data-bs-target="#topics" type="button"
+                    role="tab">{% trans 'Mövzular' %}</button>
+            </li>
+            <li class="nav-item" role="presentation">
+                <button class="nav-link" id="journal-tab" data-bs-toggle="tab" data-bs-target="#journal" type="button"
+                    role="tab">{% trans 'Elektron jurnal' %}</button>
+            </li>
+            <li class="nav-item" role="presentation">
+                <button class="nav-link" id="schedule-tab" data-bs-toggle="tab" data-bs-target="#schedule" type="button"
+                    role="tab">{% trans 'Dərs cədvəli' %}</button>
+            </li>
+            <li class="nav-item" role="presentation">
+                <button class="nav-link" id="quiz-tab" data-bs-toggle="tab" data-bs-target="#quiz" type="button"
+                    role="tab">{% trans 'Quiz' %}</button>
+            </li>
+            <li class="nav-item" role="presentation">
+                <button class="nav-link" id="exam-tab" data-bs-toggle="tab" data-bs-target="#exam" type="button"
+                    role="tab">{% trans 'İmtahan' %}</button>
+            </li>
+        </ul>
+    </div>
+    <div class="card-body">
+        <div class="tab-content" id="groupTabsContent">
+            <!-- Home Tab -->
+            <div class="tab-pane fade show active" id="home" role="tabpanel">
+                <h5 class="fw-bold mb-3">{% trans 'Qrup üzrə tələbələr' %}</h5>
+                <p class="small text-muted">{% trans 'Qrupun açılış tarixi:' %} {{ group.created_at|date:"d.m.Y" }}</p>
+                <div class="table-responsive">
+                    <table class="table table-hover align-middle">
+                        <thead class="bg-light">
+                            <tr>
+                                <th>#</th>
+                                <th>{% trans 'Tələbə' %}</th>
+                                <th>{% trans 'ID' %}</th>
+                                <th>{% trans 'Email' %}</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for student in students %}
+                            <tr>
+                                <td>{{ forloop.counter }}</td>
+                                <td>{{ student.student.get_full_name }}</td>
+                                <td>{{ student.student.username }}</td>
+                                <td>{{ student.student.email }}</td>
+                            </tr>
+                            {% empty %}
+                            <tr>
+                                <td colspan="4" class="text-center">{% trans 'Heç bir tələbə yoxdur.' %}</td>
+                            </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+            <!-- Topics Tab -->
+            <div class="tab-pane fade" id="topics" role="tabpanel">
+                <ul class="nav nav-pills mb-3" id="topicSubTabs" role="tablist">
+                    <li class="nav-item" role="presentation">
+                        <button class="nav-link active" id="topic-list-tab" data-bs-toggle="tab"
+                            data-bs-target="#topic-list" type="button">{% trans 'Mövzu adları' %}</button>
+                    </li>
+                    <li class="nav-item" role="presentation">
+                        <button class="nav-link" id="materials-tab" data-bs-toggle="tab" data-bs-target="#materials"
+                            type="button">{% trans 'Elektron materiallar' %}</button>
+                    </li>
+                </ul>
+                <div class="tab-content">
+                    <div class="tab-pane fade show active" id="topic-list">
+                        <div class="table-responsive">
+                            <table class="table table-bordered table-striped" style="background-color: #f8f9fa;">
+                                <thead style="background-color: #5c6bc0; color: white;">
+                                    <tr>
+                                        <th>№</th>
+                                        <th>{% trans 'Tarix / Saat' %}</th>
+                                        <th>{% trans 'Mövzu adı' %}</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr>
+                                        <td colspan="3" class="text-center text-muted">{% trans 'Mövzular hələ əlavə
+                                            edilməyib.' %}</td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                    <div class="tab-pane fade" id="materials">
+                        <p>{% trans 'Burada elektron materiallar (PDF, DOCX) görünəcək.' %}</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Journal Tab -->
+            <div class="tab-pane fade" id="journal" role="tabpanel">
+                <div id="journal-root">
+                    <p class="text-center loader">{% trans 'Yüklənir...' %}</p>
+                </div>
+                <script>
+                    // Placeholder for future AJAX/React/Alpine loading of the journal
+                    document.getElementById('journal-tab').addEventListener('shown.bs.tab', function () {
+                        fetch("{% url 'attendance_journal' group.id %}")
+                            .then(res => res.text())
+                            .then(html => {
+                                document.getElementById('journal-root').innerHTML = html;
+                            });
+                    });
+                </script>
+            </div>
+
+            <!-- Schedule Tab -->
+            <div class="tab-pane fade" id="schedule" role="tabpanel">
+                <p>{% trans 'Həftəlik dərs cədvəli hələlik boşdur.' %}</p>
+            </div>
+
+            <!-- Quiz Tab -->
+            <div class="tab-pane fade" id="quiz" role="tabpanel">
+                <div id="quiz-root">
+                    <p class="text-center loader">{% trans 'Yüklənir...' %}</p>
+                </div>
+                <script>
+                    document.getElementById('quiz-tab').addEventListener('shown.bs.tab', function () {
+                        fetch("{% url 'quiz_scoring' group.id %}")
+                            .then(res => res.text())
+                            .then(html => {
+                                document.getElementById('quiz-root').innerHTML = html;
+                            });
+                    });
+                </script>
+            </div>
+
+            <!-- Exam Tab -->
+            <div class="tab-pane fade" id="exam" role="tabpanel">
+                <div id="exam-root">
+                    <p class="text-center loader">{% trans 'Yüklənir...' %}</p>
+                </div>
+                <script>
+                    document.getElementById('exam-tab').addEventListener('shown.bs.tab', function () {
+                        fetch("{% url 'exam_scoring' group.id %}")
+                            .then(res => res.text())
+                            .then(html => {
+                                document.getElementById('exam-root').innerHTML = html;
+                            });
+                    });
+                </script>
+            </div>
+        </div>
+    </div>
+</div>
+
+<style>
+    .nav-tabs .nav-link {
+        color: #444;
+        border-radius: 0;
+        padding: 12px 20px;
+        font-weight: 500;
+    }
+
+    .nav-tabs .nav-link.active {
+        background-color: #3186d1 !important;
+        color: white !important;
+    }
+
+    .group-badge {
+        font-weight: bold;
+        font-size: 1.1rem;
+    }
+</style>
+{% endblock content %}

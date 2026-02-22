@@ -51,22 +51,84 @@ def home_view(request):
 
 
 @login_required
-@admin_required
 def dashboard_view(request):
-    logs = ActivityLog.objects.all().order_by("-created_at")[:10]
-    gender_count = Student.get_gender_count()
-    level_count = Student.get_level_count()
-    context = {
-        "student_count": User.objects.get_student_count(),
-        "lecturer_count": User.objects.get_lecturer_count(),
-        "superuser_count": User.objects.get_superuser_count(),
-        "males_count": gender_count["M"],
-        "females_count": gender_count["F"],
-        "bachelor_count": level_count["bachelor"],
-        "master_count": level_count["master"],
-        "logs": logs,
-    }
-    return render(request, "core/dashboard.html", context)
+    if request.user.is_superuser:
+        logs = ActivityLog.objects.all().order_by("-created_at")[:10]
+        gender_count = Student.get_gender_count()
+        level_count = Student.get_level_count()
+        context = {
+            "student_count": User.objects.get_student_count(),
+            "lecturer_count": User.objects.get_lecturer_count(),
+            "superuser_count": User.objects.get_superuser_count(),
+            "males_count": gender_count["M"],
+            "females_count": gender_count["F"],
+            "bachelor_count": level_count["bachelor"],
+            "master_count": level_count["master"],
+            "logs": logs,
+        }
+        return render(request, "core/dashboard.html", context)
+    
+    elif request.user.is_student:
+        from result.models import TakenCourse
+        from course.models import Assignment, AssignmentSubmission
+        from attendance.models import Attendance
+        from django.db.models import Avg, Count, Q
+        
+        student = get_object_or_404(Student, student=request.user)
+        taken_courses = TakenCourse.objects.filter(student=student)
+        
+        # Enrich taken_courses with attendance percentage
+        for tc in taken_courses:
+            attendances = Attendance.objects.filter(student=student, course=tc.course)
+            total = attendances.count()
+            if total > 0:
+                present = attendances.filter(is_present=True).count()
+                tc.attendance_percentage = (present / total) * 100
+            else:
+                tc.attendance_percentage = 0
+                
+        # Assignments pending
+        # Courses the student is taking
+        course_ids = taken_courses.values_list('course_id', flat=True)
+        # Assignments for these courses that don't have a submission from this student
+        pending_assignments = Assignment.objects.filter(course_id__in=course_ids).exclude(
+            submissions__student=student
+        ).order_by('due_date')
+        
+        context = {
+            "student": student,
+            "taken_courses": taken_courses,
+            "pending_assignments": pending_assignments,
+            "unread_notifications": Notification.objects.filter(user=request.user, is_read=False)[:5],
+        }
+        return render(request, "core/dashboard.html", context)
+
+    elif request.user.is_lecturer:
+        from course.models import CourseAllocation
+        
+        # Get ALL allocations for this lecturer to be safe
+        allocations = CourseAllocation.objects.filter(lecturer=request.user).select_related('group', 'group__program')
+        groups = []
+        for a in allocations:
+            if a.group and a.group not in groups:
+                groups.append(a.group)
+        
+        # Identify unique specialties from these groups
+        specs = []
+        for g in groups:
+            if g.program and g.program not in specs:
+                specs.append(g.program)
+        
+        specialties = sorted(specs, key=lambda x: x.title)
+        
+        context = {
+            "groups": groups,
+            "specialties": specialties,
+            "title": "Müəllim Paneli"
+        }
+        return render(request, "core/dashboard.html", context)
+
+    return render(request, "core/dashboard.html")
 
 
 @login_required
@@ -239,3 +301,61 @@ def unset_current_semester():
     if current_semester:
         current_semester.is_current_semester = False
         current_semester.save()
+@lecturer_required
+def group_detail_view(request, pk):
+    from course.models import ClassGroup, CourseAllocation
+    group = get_object_or_404(ClassGroup, pk=pk)
+    # Get courses assigned to this lecturer for THIS group
+    allocations = CourseAllocation.objects.filter(lecturer=request.user, group=group)
+    courses = []
+    for a in allocations:
+        courses.extend(list(a.courses.all()))
+        
+    context = {
+        "group": group,
+        "courses": list(set(courses)),
+        "students": group.students.all().select_related('student'),
+        "title": f"Qrup: {group.title}"
+    }
+    return render(request, "core/group_detail.html", context)
+
+
+@lecturer_required
+def attendance_journal_view(request, pk):
+    from course.models import ClassGroup
+    from datetime import date
+    group = get_object_or_404(ClassGroup, pk=pk)
+    # Simple mockup for current month days 1-10
+    days = list(range(1, 11))
+    context = {
+        "group": group,
+        "students": group.students.all().select_related('student'),
+        "days": days,
+    }
+    return render(request, "core/journal.html", context)
+
+
+@lecturer_required
+def quiz_scoring_view(request, pk):
+    from course.models import ClassGroup
+    group = get_object_or_404(ClassGroup, pk=pk)
+    # Get duration to determine number of months
+    # We'll just assume 6 months for now as per first scenario, but can be dynamic
+    months = list(range(1, 7))
+    context = {
+        "group": group,
+        "students": group.students.all().select_related('student'),
+        "months": months,
+    }
+    return render(request, "core/quiz_scoring.html", context)
+
+
+@lecturer_required
+def exam_scoring_view(request, pk):
+    from course.models import ClassGroup
+    group = get_object_or_404(ClassGroup, pk=pk)
+    context = {
+        "group": group,
+        "students": group.students.all().select_related('student'),
+    }
+    return render(request, "core/exam_scoring.html", context)

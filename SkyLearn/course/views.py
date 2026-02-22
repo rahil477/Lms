@@ -502,3 +502,76 @@ def user_course_list(request):
 
     # For other users
     return render(request, "course/user_course_list.html")
+
+
+# ########################################################
+# Assignment Views
+# ########################################################
+
+@login_required
+@lecturer_required
+def assignment_create(request, slug):
+    course = get_object_or_404(Course, slug=slug)
+    from .forms import AssignmentForm
+    if request.method == "POST":
+        form = AssignmentForm(request.POST, request.FILES)
+        if form.is_valid():
+            assignment = form.save(commit=False)
+            assignment.course = course
+            assignment.save()
+            messages.success(request, f"Assignment '{assignment.title}' created.")
+            return redirect("course_detail", slug=slug)
+    else:
+        form = AssignmentForm()
+    return render(request, "course/assignment_form.html", {"title": "Create Assignment", "form": form, "course": course})
+
+@login_required
+@student_required
+def assignment_submit(request, slug, assignment_id):
+    from .models import Assignment, AssignmentSubmission
+    course = get_object_or_404(Course, slug=slug)
+    assignment = get_object_or_404(Assignment, id=assignment_id)
+    student = get_object_or_404(Student, student__id=request.user.id)
+    
+    # Check if a submission already exists
+    submission = AssignmentSubmission.objects.filter(assignment=assignment, student=student).first()
+    
+    from .forms import AssignmentSubmissionForm
+    if request.method == "POST":
+        form = AssignmentSubmissionForm(request.POST, request.FILES, instance=submission)
+        if form.is_valid():
+            sub = form.save(commit=False)
+            sub.assignment = assignment
+            sub.student = student
+            sub.save()
+            messages.success(request, "Your assignment has been submitted successfully!")
+            return redirect("course_detail", slug=slug)
+    else:
+        form = AssignmentSubmissionForm(instance=submission)
+        
+    return render(request, "course/assignment_submit.html", {
+        "title": "Submit Assignment", "form": form, "assignment": assignment, "course": course, "submission": submission
+    })
+
+@login_required
+@lecturer_required
+def assignment_submissions_list(request, slug, assignment_id):
+    from .models import Assignment, AssignmentSubmission
+    course = get_object_or_404(Course, slug=slug)
+    assignment = get_object_or_404(Assignment, id=assignment_id)
+    submissions = AssignmentSubmission.objects.filter(assignment=assignment).order_by('-submitted_at')
+    
+    if request.method == "POST":
+        # Process grading
+        submission_id = request.POST.get("submission_id")
+        points = request.POST.get("points")
+        if submission_id and points:
+            sub = get_object_or_404(AssignmentSubmission, id=submission_id)
+            sub.points_awarded = points
+            sub.save()
+            messages.success(request, f"Marked {sub.student}'s submission with {points} points.")
+            return redirect('assignment_submissions_list', slug=slug, assignment_id=assignment_id)
+
+    return render(request, "course/assignment_submissions_list.html", {
+        "title": "Submissions", "assignment": assignment, "course": course, "submissions": submissions
+    })

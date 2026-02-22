@@ -74,4 +74,9 @@ urlpatterns = [
     path("course/registration/", views.course_registration, name="course_registration"),
     path("course/drop/", views.course_drop, name="course_drop"),
     path("my_courses/", views.user_course_list, name="user_course_list"),
+    
+    # Assignment urls
+    path("course/<slug>/assignments/create/", views.assignment_create, name="assignment_create"),
+    path("course/<slug>/assignments/<int:assignment_id>/submit/", views.assignment_submit, name="assignment_submit"),
+    path("course/<slug>/assignments/<int:assignment_id>/submissions/", views.assignment_submissions_list, name="assignment_submissions_list"),
 ]

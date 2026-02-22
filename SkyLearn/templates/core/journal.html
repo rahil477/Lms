@@ -1,0 +1,164 @@
+{% load i18n %}
+<div class="journal-wrapper">
+    <div class="table-responsive">
+        <table class="table table-bordered text-center align-middle journal-table">
+            <thead class="bg-primary text-white">
+                <tr>
+                    <th rowspan="2">{% trans 'Tələbə' %}</th>
+                    <th colspan="10">{% trans 'Fevral 2026' %}</th>
+                </tr>
+                <tr>
+                    {% for day in days %}
+                    <th>{{ day }}</th>
+                    {% endfor %}
+                </tr>
+            </thead>
+            <tbody>
+                {% for student in students %}
+                <tr>
+                    <td class="text-start ps-3">{{ student.student.get_full_name }}</td>
+                    {% for day in days %}
+                    <td>
+                        <div class="attendance-cell" data-student="{{ student.id }}" data-day="{{ day }}"
+                            data-locked="false">
+                            <span class="status-badge status-none">d/e</span>
+                        </div>
+                    </td>
+                    {% endfor %}
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+</div>
+
+<!-- QB Pop-up -->
+<div id="qb-popup" class="qb-popup shadow d-none">
+    <div class="p-2 d-flex gap-2">
+        <button class="btn btn-primary btn-sm qb-choice" data-val="ie">i/e</button>
+        <button class="btn btn-danger btn-sm qb-choice" data-val="qb">qb</button>
+    </div>
+</div>
+
+<!-- Alert Pop-up (3.5s) -->
+<div id="alert-popup" class="alert-popup d-none">
+    <div class="alert alert-danger mb-0">
+        {% trans 'Bu əməliyyat üçün hüququnuz yoxdur' %}
+    </div>
+</div>
+
+<style>
+    .journal-table th,
+    .journal-table td {
+        font-size: 0.85rem;
+        min-width: 40px;
+    }
+
+    .attendance-cell {
+        cursor: pointer;
+        padding: 5px;
+        border-radius: 4px;
+        transition: background 0.2s;
+    }
+
+    .attendance-cell:hover {
+        background-color: #f0f0f0;
+    }
+
+    .status-badge {
+        font-weight: bold;
+        padding: 2px 5px;
+        border-radius: 3px;
+        display: block;
+    }
+
+    .status-none {
+        color: #888;
+    }
+
+    .status-ie {
+        background-color: #3186d1;
+        color: white;
+    }
+
+    .status-qb {
+        background-color: #dc3545;
+        color: white;
+    }
+
+    .qb-popup {
+        position: absolute;
+        background: white;
+        border: 1px solid #ccc;
+        z-index: 1000;
+        border-radius: 8px;
+    }
+
+    .alert-popup {
+        position: fixed;
+        top: 20px;
+        left: 50%;
+        transform: translateX(-50%);
+        z-index: 2000;
+        min-width: 300px;
+        text-align: center;
+    }
+</style>
+
+<script>
+    (function () {
+        const cells = document.querySelectorAll('.attendance-cell');
+        const popup = document.getElementById('qb-popup');
+        const alertPopup = document.getElementById('alert-popup');
+        let currentCell = null;
+
+        cells.forEach(cell => {
+            cell.addEventListener('click', function (e) {
+                if (this.dataset.locked === 'true') {
+                    showAlert();
+                    return;
+                }
+
+                currentCell = this;
+                const rect = this.getBoundingClientRect();
+                popup.style.top = (window.scrollY + rect.bottom) + 'px';
+                popup.style.left = (window.scrollX + rect.left) + 'px';
+                popup.classList.remove('d-none');
+            });
+        });
+
+        document.querySelectorAll('.qb-choice').forEach(btn => {
+            btn.addEventListener('click', function () {
+                const val = this.dataset.val;
+                updateCell(currentCell, val);
+                popup.classList.add('d-none');
+            });
+        });
+
+        function updateCell(cell, val) {
+            const span = cell.querySelector('span');
+            span.className = 'status-badge status-' + val;
+            span.textContent = val === 'ie' ? 'i/e' : 'qb';
+
+            // Lock it after update (simulating teacher and immutability)
+            cell.dataset.locked = 'true';
+
+            // In a real app, send AJAX here to save to server
+            console.log('Saving attendance:', cell.dataset.student, cell.dataset.day, val);
+        }
+
+        function showAlert() {
+            alertPopup.classList.remove('d-none');
+            setTimeout(() => {
+                alertPopup.classList.add('d-none');
+            }, 3500);
+        }
+
+        // Close popup on click outside
+        document.addEventListener('click', function (e) {
+            if (currentCell && !currentCell.contains(e.target) && !popup.contains(e.target)) {
+                popup.classList.add('d-none');
+            }
+        });
+    })();
+</script>
