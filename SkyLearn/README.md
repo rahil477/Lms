@@ -2,96 +2,113 @@
 
 ### The world’s most high-end designed, lightweight, and feature-rich learning management system.
 
-# SkyLearn: Open source learning management system
+# LMS (Customized SkyLearn)
 
-Learning management system using Django web framework. You might want to develop a learning management system (also known as a school/college management system) for a school/college organization, or simply for the purpose of learning the tech stack and enhancing your portfolio. In either case, this project would be a great way to get started. The aim is to create the world's most lightweight yet feature-rich learning management system. However, this is not possible without your support, so please give it a star ⭐️.
+Bu layihə orijinal **SkyLearn** (Open source learning management system) əsasında yaradılmış və xüsusi ehtiyaclara uyğunlaşdırılmış Tədris İdarəetmə Sistemidir (LMS). Layihə Django web framework ilə yazılıb. 
 
-_Documentation is under development_
+Orijinal repositoriya: [SkyLearn](https://github.com/SkyCascade/SkyLearn)  
+Mövcud repositoriya: [rahil477/LMS](https://github.com/rahil477/LMS)
 
-Let's enhance the project by contributing! 👩‍💻👩‍💻
+---
 
-<img width="1440" alt="screenshot" src="https://github.com/user-attachments/assets/08644f49-6ae0-4695-86cc-afe331c6f61a">
+## 🛠 Nələr Dəyişdirilib və Əlavə Edilib? (Customizations)
 
-## Current features
+Orijinal SkyLearn üzərində aşağıdakı əsas dəyişikliklər və düzəlişlər edilmişdir:
 
-- Dashboard: School demographics and analytics. Restricted to only admins
-- News And Events: All users can access this page
-- Admin manages students(Add, Update, Delete)
-- Admin manages lecturers(Add, Update, Delete)
-- Students can Add and Drop courses
-- Lecturers submit students' scores: _Attendance, Mid exam, Final exam, assignment_
-- The system calculates students' _Total, average, point, and grades automatically_
-- Grade comment for each student with a **pass**, **fail**, or **pass with a warning**
-- Assessment result page for students
-- Grade result page for students
-- Session/year and semester management
-- Assessments and grades will be grouped by semester
-- Upload video and documentation for each course
-- PDF generator for students' registration slip and grade result
-- Page access restriction
-- Storing of quiz results under each user
-- Question order randomization
-- Previous quiz scores can be viewed on the category page
-- Correct answers can be shown after each question or all at once at the end
-- Logged-in users can return to an incomplete quiz to finish it and non-logged-in users can complete a quiz if their session persists
-- The quiz can be limited to one attempt per user
-- Questions can be given a category
-- Success rate for each category can be monitored on a progress page
-- Explanation for each question result can be given
-- Pass marks can be set
-- Multiple choice question type
-- True/False question type
-- Essay question type................._Coming soon_
-- Custom message displayed for those that pass or fail a quiz
-- Custom permission (view_sittings) added, allowing users with that permission to view quiz results from users
-- A marking page which lists completed quizzes, can be filtered by quiz or user, and is used to mark essay questions
+1. **Bug Fixes (Xəta Həlləri):**
+   - **TemplateSyntaxError həlli:** `sidebar.html` faylında qlobal olaraq bütün səhifələri çökdürən tərcümə və şablon xətası (`lang.code==LANGUAGE_CODE` boşluq problemi) düzəldildi.
+   - **Tərcümə (i18n) Xətalarının Həlli:** Tələbə və müəllim siyahılarında ("Add Student" kimi) tərcümə taglarının işləməməsi və ekranda literal tagların (`{% trans 'Add Student' %}`) görünməsi problemi aradan qaldırıldı.
 
-# Quick note for future contributors
+2. **Dillər və Tərcümə:**
+   - Azərbaycan dili (az) dəstəyi tam formalaşdırıldı və default dil olaraq sazlandı.
+   - UI komponentləri, menyular və formlar lokallaşdırıldı.
 
-If you would like to contribute, simply begin by implementing one from the list in the `TODO.md` file.
+3. **Hesabların İdarəedilməsi və Təhlükəsizlik:**
+   - İstifadəçi adı və parolların təhlükəsiz və düzgün formalaşdırılması sistemi təkmilləşdirildi (Ad.Soyad formatında avtomatik istifadəçi adlarının təyin edilməsi).
 
-# Requirements:
+---
 
-> The following program(s) are required to run the project
+## 🚀 Quraşdırma (Installation)
 
-- [Python3.8+](https://www.python.org/downloads/)
+Layihəni öz kompyuterinizdə və ya serverinizdə işə salmaq üçün aşağıdakı addımları izləyin:
 
-# Installation
+### Tələblər:
+- Python 3.8+
+- Git
 
-- Clone the repo with
+### Addım-addım quraşdırma:
 
-```bash
-git clone https://github.com/SkyCascade/SkyLearn.git
-```
+1. **Repozitoriyanı klonlayın:**
+   ```bash
+   git clone https://github.com/rahil477/LMS.git
+   cd LMS
+   ```
 
-- Create and activate a python virtual environment
+2. **Virtual mühit (Virtual Environment) yaradın və aktivləşdirin:**
+   - Windows üçün:
+     ```bash
+     python -m venv venv
+     .\venv\Scripts\activate
+     ```
+   - Mac/Linux üçün:
+     ```bash
+     python3 -m venv venv
+     source venv/bin/activate
+     ```
 
-```bash
-pip install -r requirements.txt
-```
+3. **Asılılıqları (Dependencies) yükləyin:**
+   ```bash
+   pip install -r requirements.txt
+   ```
 
-- Create `.env` file inside the root directory
+4. **Kataloqa daxil olun və `.env` faylını yaradın:**
+   ```bash
+   cd SkyLearn
+   ```
+   *Qeyd: `.env.example` faylının içindəki məlumatları kopyalayıb eyni qovluqda `.env` adlı fayl yaradın və ora yapışdırın.*
 
-- Copy and paste everything in the `.env.example` file into the `.env` file. Don't forget to customize the variable values
+5. **Məlumat bazasını qurmaq üçün miqrasiyaları işə salın:**
+   ```bash
+   python manage.py migrate
+   ```
 
-```bash
-python manage.py migrate
-```
+6. **Admin hesabı yaradın:**
+   ```bash
+   python manage.py createsuperuser
+   ```
+   *(Ekranda sizdən username, email və password istəniləcək)*
 
-```bash
-python manage.py createsuperuser
-```
+7. **Serveri işə salın:**
+   ```bash
+   python manage.py runserver
+   ```
 
-```bash
-python manage.py runserver
-```
+Artıq sayt lokal serverinizdə işləktir. Brauzerinizdə daxil olun: **http://127.0.0.1:8000**
 
-Last but not least, go to this address http://127.0.0.1:8000
+---
 
-#### _Check [this page](https://adilmohak.github.io/dj-lms-starter/) for more insight and support._
+## 📖 Necə İstifadə Edilir? (Usage Guide)
 
-# References
+Sistemdə əsasən 3 rol var: **Admin, Müəllim (Lecturer) və Tələbə (Student).**
 
-- Quiz part: https://github.com/tomwalker/django_quiz
+### 1. Panelə Giriş
+- Quraşdırma zamanı yaratdığınız **Superuser (Admin)** parolu ilə http://127.0.0.1:8000/en/accounts/login/ (və ya əsas səhifədəki Login düyməsi ilə) sistemə daxil olun.
 
-#### Show your support by ⭐️ this project!
+### 2. Tələbə və Müəllim Əlavə etmək
+- **İstifadəçi Yaratmaq:** Admin Panelindən (sol menyudakı "Students" və ya "Lecturers" bölməsi) yeni tələbə və müəllimlər yarada bilərsiniz. 
+- Yaratdığınız hər bir profil üçün **Username** və **Password** təyin edin.
+- *Əgər parolları sonradan dəyişmək lazımdırsa:* Bunu Django-nun əsas admin panelindən (`http://127.0.0.1:8000/admin/`) "Users" bölməsinə daxil olaraq "change password" linki ilə edə bilərsiniz.
+
+### 3. Kurslar və Fənlər
+- **"Programs & Courses"** bölməsindən yeni tədris proqramları və fənlər əlavə edin.
+- Hər kursa spesifik müəllim təyin edə ("Course Allocation") və qiymətləndirmə meyarları yarada bilərsiniz.
+
+### 4. Davamiyyət və Qiymətlər
+- Müəllimlər sistemə öz hesabları (username/password) ilə daxil olaraq onlara təyin edilmiş fənlər üzrə tələbələrin **davamiyyətini yoxlaya** və **imtahan/tapşırıq qiymətlərini** daxil edə bilərlər.
+
+### 5. Avtomatik Hesablamalar
+- Sistem tələbələrin ballarını (Mid exam, Final exam, assignment) avtomatik toplayaraq nəticəni (Pass/Fail) özü hesablayır. Tələbələr isə öz hesablarına girərək profillərindən qiymət cədvəllərini və davamiyyətlərini görə bilərlər.
+
+---
+
+> Bu versiya açıq mənbəli (Open Source) SkyLearn layihəsinin xətalardan təmizlənmiş və lokallaşdırılmış forkudur. Sual və ya problemlər yaranarsa GitHub "Issues" bölməsindən istifadə edə bilərsiniz.
